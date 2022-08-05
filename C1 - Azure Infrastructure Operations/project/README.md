@@ -18,59 +18,65 @@ For this project, you will write a Packer template and a Terraform template to d
 
 ### Instructions
 
-Login to your Azure account
-az login
+* Login to your Azure account
+    ```
+    az login
+    ```
 
-Create Azure policy definition to deny deployment of untagged resources from policy folder.
+* Create Azure policy definition to deny deployment of untagged resources from policy folder.
+    ```
+    az policy definition create --name deny-creation-untagged-resources --display-name "Deny creation of untagged indexed resources" --description "This policy deny the creation of untagged indexed resources" --rules tagging-policy.rules.json --mode Indexed
+    ```
+* Assign policy to subscription
+    ```
+    az policy assignment create --name tagging-policy --policy deny-creation-untagged-resources
+    ```
+* (Optional) Verify the assignment
+    ```
+    az policy assignment list
+    ```
+* Create packer image with webserver demo configuration using the template on packer folder
 
-az policy definition create --name deny-creation-untagged-resources --display-name "Deny creation of untagged indexed resources" --description "This policy deny the creation of untagged indexed resources" --rules tagging-policy.rules.json --mode Indexed
+    First authenticate to your account, the template contains enviromental variable definitions to use with Azure credentials.
 
-Assign policy to subscription
+    Then create the vm image
+    ```
+    packer build server.json
+    ```
+    or alternatively if the image is already created
+    ```
+    packer build -force server.json
+    ```
+* Create cloud infrastructure using the template in terraform folder
 
-az policy assignment create --name tagging-policy --policy deny-creation-untagged-resources
+    Set up the deployment variables documented in variables.tf
 
-(Optional) Verify the assignment
-
-az policy assignment list
-
-Create packer image with webserver demo configuration using the template on packer folder
-
-First authenticate to your account, the template contains enviromental variable definitions to use with Azure credentials.
-
-Then create the vm image
-
-packer build server.json
-
-or alternatively if the image is already created
-
-packer build -force server.json
-
-To create cloud infrastructure use the template in terraform folder
-
-Set up the deployment variables documented in variables.tf
-
-Initialize terraform
-
-terraform init
-
-Visualize the plan for the deployment
-
-terraform plan
-
-or generate a plan file
-
-terraform plan -out solution.plan
-
-Apply the changes
-
-terraform apply
-
-or using the generated plan file
-
-terraform apply solution.plan
-
-Using the public ip assigned to the load balancer (assigned dynamically, find the address using az CLI or azure portal) check the web servers are running properly with an http client or web browser.
+    Initialize terraform
+    ```
+    terraform init
+    ```
+    Visualize the plan for the deployment
+    ```
+    terraform plan
+    ```
+    or generate a plan file
+    ```
+    terraform plan -out solution.plan
+    ```
+    Apply the changes
+    ```
+    terraform apply
+    ```
+    or using the generated plan file
+    ```
+    terraform apply solution.plan
+    ```
+* Using the public ip assigned to the load balancer (assigned dynamically
+    1. Find the address using az CLI or azure portal)
+    2. Check the web servers are running properly with an http client or web browser.
 
 ### Output
-
+The web page will show the following message:
+```
 Hello, World!
+```
