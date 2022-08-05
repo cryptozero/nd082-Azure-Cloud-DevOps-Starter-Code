@@ -1,2 +1,6 @@
 .DS_Store
 .DS_Store?
+C1 - Azure Infrastructure Operations/project/tf/.terraform.lock.hcl
+C1 - Azure Infrastructure Operations/project/tf/terraform.tfstate
+C1 - Azure Infrastructure Operations/project/tf/terraform.tfstate.backup
+C1 - Azure Infrastructure Operations/project/tf/.terraform/**

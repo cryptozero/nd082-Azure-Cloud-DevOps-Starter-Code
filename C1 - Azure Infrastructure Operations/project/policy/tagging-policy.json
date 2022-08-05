@@ -1,0 +1,20 @@
+{
+    "properties": {
+        "displayName": "Deny creation of untagged indexed resources",
+        "description": "This policy deny the creation of untagged indexed resources",
+        "mode": "Indexed",
+        "metadata": {
+            "version": "1.0.0",
+            "category": "Tags"
+        },
+        "policyRule": {
+            "if": {
+                "field": "tags",
+                "exists": "false"
+            },
+            "then": {
+                "effect": "deny"
+            }
+        }
+    }
+}
